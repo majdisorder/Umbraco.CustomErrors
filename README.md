@@ -20,7 +20,7 @@ First we will create a Document Type to hold our error content. Of course you ca
 
 It doesn't really matter how you set up the doctype, the real important part here is having a doctype alias, as we will be using that later.
 
-After you have set up a doctype and assigned a template, go to the Content section of Umbraco and create your error pages. In this particular setup we will use the Content Name property to hold the error code. This gives us something to check against, as well as an easily accesible url. Of course this means we will need a content item for each error code we want to capture. You can always use a different approach, but I kind of like this, beacause it's clean and simple.
+After you have set up a doctype and assigned a template, go to the Content section of Umbraco and create your error pages. In this particular setup we will use the Content Name property to hold the error code. This gives us something to check against, as well as an easily accesible url. Of course this means we will need a content item for each error code we want to capture. You can always use a different approach, but I kind of like this, because it's clean and simple.
 
 So, say we want to catch 500, 400 and 404. Create three nodes using the Error Page Document type we just created, and name them... You guessed it: 500, 400 and 404 respectively. 
 
