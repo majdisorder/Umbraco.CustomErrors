@@ -134,3 +134,6 @@ At this point we are ready to configure the custom errors for our application. F
 ```
 
 And that's it. If all goes well, you should now be able to serve error pages straight from Umbraco.
+
+If you want to test if everything works, I added some links to the master template to trigger 500 and 400 errors. For a 404 just try an unknown url.
+
