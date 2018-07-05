@@ -103,3 +103,34 @@ This page will perform the actual magic. Does it have have to be an aspx page yo
 </body>
 </html>
 ```
+
+### 2. Configuring IIS
+#### Web.config
+At this point we are ready to configure the custom errors for our application. For this you will need to edit the Web.config. Only the relevant sections are shown.
+```xml
+<configuration>
+    <appSettings>
+    <add key="umbracoReservedUrls" value="~/error.aspx,~/config/splashes/booting.aspx,~/install/default.aspx,~/config/splashes/noNodes.aspx,~/VSEnterpriseHelper.axd" />
+    <!-- umbracoReservedUrls will already be in the config file, just add ~/error.aspx to the list -->
+    </appSettings>
+    <system.web>
+        <customErrors mode="On" redirectMode="ResponseRewrite" defaultRedirect="~/error.aspx">
+          <error statusCode="500" redirect="~/error.aspx"/>
+          <error statusCode="400" redirect="~/error.aspx?code=400"/>
+          <error statusCode="404" redirect="~/error.aspx?code=404"/>
+        </customErrors>
+    </system.web>
+    <system.webServer>
+    <httpErrors  errorMode="Custom">
+      <remove statusCode="400"/>
+      <error statusCode="400" path="/error.aspx?code=400" responseMode="ExecuteURL"/>
+      <remove statusCode="500"/>
+      <error statusCode="500" path="/error.aspx" responseMode="ExecuteURL"/>
+      <remove statusCode="404"/>
+      <error statusCode="404" path="/error.aspx?code=404" responseMode="ExecuteURL"/>
+    </httpErrors>
+    </system.webServer>
+<configuration>
+```
+
+And that's it. If all goes well, you should now be able to serve error pages straight from Umbraco.
