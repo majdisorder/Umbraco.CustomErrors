@@ -1,0 +1,17 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.ErrorPage>
+@using ContentModels = Umbraco.Web.PublishedContentModels;
+@{
+    Layout = "Master.cshtml";
+}
+
+
+<section class="section">
+    <div class="container">
+        <div class="col-md-9">
+            <div>
+                <h1>@Model.Content.Title</h1>
+                @Model.Content.Body
+            </div>
+        </div>
+    </div>
+</section>
