@@ -27,7 +27,7 @@ So, say we want to catch 500, 400 and 404. Create three nodes using the Error Pa
 **Note:** I also set up ModelsBuilder with `ModelsMode="AppData"`. This isn't absolutely necessary, but I do it this way because it allows us to write cleaner code.
 
 ### 2. Show me the code
-#### ErrorPageFilter.cs
+#### Filters/ErrorPageFilter.cs
 This ActionFilter will capture requests to our Error Page Document Type and set the correct http status code.
 
 ```cs
@@ -46,4 +46,60 @@ public override void OnResultExecuted(ResultExecutedContext filterContext)
         filterContext.HttpContext.Response.StatusCode = statusCode;
     }
 }
+```
+
+#### Events/Application.cs
+Hook up the ActionFilter we just created as a global filter.
+```cs
+public class Application : ApplicationEventHandler
+{
+    protected override void ApplicationStarting(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
+    {
+        GlobalFilters.Filters.Add(new ErrorPageFilter());
+    }
+}
+```
+#### error.aspx
+This page will perform the actual magic. Does it have have to be an aspx page you say? Yes. I'm sorry.
+```
+<% Response.StatusCode = 500; %> <!-- this is just a fallback really -->
+<!DOCTYPE html>
+<% 
+    var httpCodeRaw = Request["code"];
+    int httpCode;
+    //determine the status code based on the querystring, or default to 500
+    if (int.TryParse(httpCodeRaw, out httpCode))
+    {
+        Response.StatusCode = httpCode;
+    }
+    else
+    {
+        httpCode = 500;
+    }
+
+    try
+    {
+        Server.TransferRequest("/" + httpCode, true); 
+        //load the actual content from umbraco. 
+        //This is why we set the Name (and hence the url) to the http status code
+    }
+    catch(Exception e)
+    {
+        //do the logging boogie
+    }
+%>
+
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Oops</title>
+</head>
+<body>
+    Something went terribly wrong. 
+    <!-- 
+        This is an ultimate fallback, in case umbraco can't process the request to the actual error content.
+        Feel free to style this as you see fit. Of course you can always intentionally leave it ugly ;)    
+    -->
+</body>
+</html>
 ```
