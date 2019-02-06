@@ -1,4 +1,3 @@
-﻿<% Response.StatusCode = 500; %>
 <!DOCTYPE html>
 <% 
     var httpCodeRaw = Request["code"];
@@ -10,6 +9,7 @@
     else
     {
         httpCode = 500;
+       Response.StatusCode = httpCode;
     }
 
     try
