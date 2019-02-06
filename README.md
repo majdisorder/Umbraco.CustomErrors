@@ -62,7 +62,6 @@ public class Application : ApplicationEventHandler
 #### error.aspx
 This page will perform the actual magic. Does it have have to be an aspx page you say? Yes. I'm sorry.
 ```
-<% Response.StatusCode = 500; %> <!-- this is just a fallback really -->
 <!DOCTYPE html>
 <% 
     var httpCodeRaw = Request["code"];
@@ -75,6 +74,7 @@ This page will perform the actual magic. Does it have have to be an aspx page yo
     else
     {
         httpCode = 500;
+        Response.StatusCode = httpCode;
     }
 
     try
